@@ -5,7 +5,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
 
   //guarda los datos del pokemon cuando la api responde con exito
-  // null es todavia no hemos encontrado ninguno
+  // null si todavia no hemos encontrado ninguno
   const [pokemon, setPokemon] = useState(null);
 
   //true mientras se espera la respuesta de la api
@@ -81,6 +81,78 @@ function App() {
         </h1>
         <p className="header__subtitle">Busca cualquier Pokémon al instante</p>
       </header>
+
+      {/* busqueda */}
+      <main className="main">
+        <div className="search-container">
+          <div className="search-wrapper">
+            {/* icono de busqueda */}
+            <span className="search-icon" aria-hidden="true">
+              ⚡
+            </span>
+            {/* input del estado searchTerm */}
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Escribe un nombre o un número..."
+              value={searchTerm}
+              onChange={handleInputChange}
+              autoFocus
+              aria-label="Buscar Pokémon"
+            />
+            {/* limpiar buscador visible si hay texto*/}
+            {searchTerm && (
+              <button
+                className="search-clear"
+                onClick={() => setSearchTerm("")}
+                aria-label="Limpiar búsqueda"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
+
+        {loading && (
+          <div className="status-container">
+            <div className="pokeball-loader" aria-label="Cargando...">
+              <div className="pokeball-loader__top" />
+              <div className="pokeball-loader__bottom" />
+              <div className="pokeball-loader__button" />
+            </div>
+            <p className="status-text">Buscando Pokémon</p>
+          </div>
+        )}
+
+        {error && !loading && (
+          <div className="status-container">
+            <div className="error-card" role="alert">
+              <span className="error-card__icon">😵</span>
+              <p className="error-card__message">{error}</p>
+              <p className="error-card__hint">
+                Prueba con el nombre exacto o el número del Pokémon
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* tarjeta pokemon encontrado solo se mustra si es null y no hay carga ni error */}
+        {pokemon && !loading && !error && (
+          <PokemonCard pokemon={pokemon}/>
+        )}
+
+        {/*estado inicial, no se busca nada */}
+        {!searchTerm && !loading && !error && !pokemon && (
+          <div className="status-container">
+            <div className="empty-state">
+              <div className="empty-state__pokeballs" aria-hidden="true">
+                <span>⬤</span><span>⬤</span><span>⬤</span>
+              </div>
+              
+            </div>
+          </div>
+        )}
+      </main>
     </div>
   );
 }
