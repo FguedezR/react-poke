@@ -46,14 +46,32 @@ const fetchPokemon = async (name) => {
     }
     const data = await response.json();
 
+    // extraemos lo esencial de la api
     setPokemon({
       id: data.id,
       name: data.name,
-      image: data.sprites,
-    })
+      image:
+        data.sprites.other["official-artwork"].front_default ||
+        data.sprites.front_default,
+      types: data.types.map((t) => t.type.name),
+      height: data.height / 10,
+      weight: data.weight / 10,
+      abilities: data.abilities.map((a) => a.ability.name),
+      stats: data.stats.map((a) => ({
+        name: s.stat.name,
+        value: s.base_stat,
+      })),
+    });
   } catch (err) {
+    setError(err.message)
   } finally {
+    setLoading(false)
   }
 };
+
+const handleInputChange = (event) => {
+  setSearchTerm(event.target.value)
+}
+
 
 export default App;
