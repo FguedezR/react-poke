@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PokemonCard from "./components/PokemonCard"
 
 function App() {
   // guarda lo que el usuario escribe en el input
@@ -137,22 +138,36 @@ function App() {
         )}
 
         {/* tarjeta pokemon encontrado solo se mustra si es null y no hay carga ni error */}
-        {pokemon && !loading && !error && (
-          <PokemonCard pokemon={pokemon}/>
-        )}
+        {pokemon && !loading && !error && <PokemonCard pokemon={pokemon} />}
 
         {/*estado inicial, no se busca nada */}
         {!searchTerm && !loading && !error && !pokemon && (
           <div className="status-container">
             <div className="empty-state">
               <div className="empty-state__pokeballs" aria-hidden="true">
-                <span>⬤</span><span>⬤</span><span>⬤</span>
+                <span>⬤</span>
+                <span>⬤</span>
+                <span>⬤</span>
               </div>
-              
+              <p className="empty-state__text">
+                ¿A qué Pokémon estás buscando, entrenador?
+              </p>
             </div>
           </div>
         )}
       </main>
+      <footer className="footer">
+        <p>
+          Datos obtenidos de{" "}
+          <a
+            href="https://pokeapi.co"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            PokéAPI
+          </a>
+        </p>
+      </footer>
     </div>
   );
 }
