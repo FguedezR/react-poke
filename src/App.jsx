@@ -29,49 +29,60 @@ function App() {
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
-}
 
-const fetchPokemon = async (name) => {
-  setLoading(true);
-  setError(null);
-  setPokemon(null);
+  const fetchPokemon = async (name) => {
+    setLoading(true);
+    setError(null);
+    setPokemon(null);
 
-  try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-    if (!response.ok) {
-      if (response.status === 404) {
-        throw new Error(`No se encontró ningún Pokémon llamando ${name}`);
+    try {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(`No se encontró ningún Pokémon llamando ${name}`);
+        }
+        throw new Error(`Error en la API: ${response.status}`);
       }
-      throw new Error(`Error en la API: ${response.status}`);
+      const data = await response.json();
+
+      // extraemos lo esencial de la api
+      setPokemon({
+        id: data.id,
+        name: data.name,
+        image:
+          data.sprites.other["official-artwork"].front_default ||
+          data.sprites.front_default,
+        types: data.types.map((t) => t.type.name),
+        height: data.height / 10,
+        weight: data.weight / 10,
+        abilities: data.abilities.map((a) => a.ability.name),
+        stats: data.stats.map((a) => ({
+          name: s.stat.name,
+          value: s.base_stat,
+        })),
+      });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-    const data = await response.json();
+  };
 
-    // extraemos lo esencial de la api
-    setPokemon({
-      id: data.id,
-      name: data.name,
-      image:
-        data.sprites.other["official-artwork"].front_default ||
-        data.sprites.front_default,
-      types: data.types.map((t) => t.type.name),
-      height: data.height / 10,
-      weight: data.weight / 10,
-      abilities: data.abilities.map((a) => a.ability.name),
-      stats: data.stats.map((a) => ({
-        name: s.stat.name,
-        value: s.base_stat,
-      })),
-    });
-  } catch (err) {
-    setError(err.message)
-  } finally {
-    setLoading(false)
-  }
-};
+  const handleInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
-const handleInputChange = (event) => {
-  setSearchTerm(event.target.value)
+  return (
+    <div className="app">
+      <header className="header">
+        <div className="header__pokeball" aria-hidden="true" />
+        <h1 className="header__title">
+          <span className="header__title--poke">Poké</span>Finder
+        </h1>
+        <p className="header__subtitle">Busca cualquier Pokémon al instante</p>
+      </header>
+    </div>
+  );
 }
-
 
 export default App;
