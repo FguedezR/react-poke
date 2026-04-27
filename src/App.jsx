@@ -144,7 +144,7 @@ function App() {
         )}
 
         {/* tarjeta del Pokémon encontrado */}
-        {/* Solo se muestra si pokemon no es null y no hay carga ni error */}
+        {/* solo se muestra si pokemon no es null y no hay carga ni error */}
         {pokemon && !loading && !error && <PokemonCard pokemon={pokemon} />}
 
         {/* estado inicial. no se ha buscado nada todavía */}

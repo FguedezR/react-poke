@@ -1,4 +1,5 @@
 function PokemonCard({ pokemon }) {
+  // colores por tipo de pokemon
   const typeColors = {
     fire: { bg: "#FF6B35", text: "#fff" },
     water: { bg: "#4A90D9", text: "#fff" },
@@ -20,12 +21,14 @@ function PokemonCard({ pokemon }) {
     flying: { bg: "#89AAE6", text: "#1a1a1a" },
   };
 
+  // tipo principal (primero del array) define el color de la tarjeta
   const primaryType = pokemon.types[0];
   const primaryColor = typeColors[primaryType]?.bg || "#777";
 
-  /* formateo de las minusculas */
+  // format o capitalizar primera letra
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
+  // formatear nombre del stat
   const formatStatName = (name) => {
     const names = {
       hp: "HP",
@@ -35,54 +38,53 @@ function PokemonCard({ pokemon }) {
       "special-defense": "Sp. Defensa",
       speed: "Velocidad",
     };
-
-    return names[names] || capitalize(names);
+    return names[name] || capitalize(name);
   };
 
   return (
     <div className="pokemon-card" style={{ "--type-color": primaryColor }}>
-      {/* fondo numero pokemon */}
       <div className="pokemon-card__bg-number" aria-hidden="true">
         #{String(pokemon.id).padStart(3, "0")}
       </div>
 
-      {/* imagen - nombre */}
+      {/* sección superior */}
       <div className="pokemon-card__header">
         <div className="pokemon-card__image-wrapper">
           <img
+            className="pokemon-card__image"
             src={pokemon.image}
             alt={`Imagen oficial de ${pokemon.name}`}
-            className="pokemon-card__image"
-            /* por si falla la imagen */
+            // imagen alternativa
             onError={(e) => {
               e.target.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`;
             }}
           />
         </div>
-      </div>
 
-      <div className="pokemon-card__info">
-        <span className="pokemon-card__number">
-          #{String(pokemon.id).padStart(3, "0")}
-        </span>
-        <h2 className="pokemon-card__name">{capitalize(pokemon.name)}</h2>
+        <div className="pokemon-card__info">
+          <span className="pokemon-card__number">
+            #{String(pokemon.id).padStart(3, "0")}
+          </span>
+          <h2 className="pokemon-card__name">{capitalize(pokemon.name)}</h2>
 
-        <div className="pokemon-card__types">
-          {pokemon.types.map((types) => (
-            <span
-              key={type}
-              className="pokemon-card__type-badge"
-              style={{
-                backgroundColor: typeColors[type]?.bg || "#777",
-                color: typeColors[type]?.text || "#fff",
-              }}
-            >
-              {capitalize(type)}
-            </span>
-          ))}
+          <div className="pokemon-card__types">
+            {pokemon.types.map((type) => (
+              <span
+                key={type}
+                className="pokemon-card__type-badge"
+                style={{
+                  backgroundColor: typeColors[type]?.bg || "#777",
+                  color: typeColors[type]?.text || "#fff",
+                }}
+              >
+                {capitalize(type)}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
+      {/* sección de stats físicas */}
       <div className="pokemon-card__physical">
         <div className="pokemon-card__physical-item">
           <span className="pokemon-card__physical-label">Altura</span>
@@ -115,12 +117,13 @@ function PokemonCard({ pokemon }) {
               {formatStatName(stat.name)}
             </span>
             <span className="pokemon-card__stat-value">{stat.value}</span>
-
+            {/* barra de progreso */}
             <div className="pokemon-card__stat-bar">
               <div
                 className="pokemon-card__stat-bar-fill"
                 style={{
                   width: `${Math.min((stat.value / 255) * 100, 100)}%`,
+                  // Math.min asegura que nunca supere el 100%
                 }}
               />
             </div>

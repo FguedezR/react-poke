@@ -1,7 +1,4 @@
-/* ============================================================
-   App.css — Estilos de la aplicación PokéFinder
-   ============================================================
-   
+/*   
    Usamos una metodología llamada BEM (Block__Element--Modifier)
    para nombrar las clases CSS. Esto hace que el código sea más
    predecible y fácil de mantener:
@@ -12,69 +9,49 @@
    
    Ejemplo: .pokemon-card__name, .search-input--focused
    ============================================================ */
-
-/* ============================================================
-   FUENTES (Google Fonts)
-   ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800&display=swap');
-/* 
-   Bangers: fuente display de estilo cómic, perfecta para Pokémon
-   Nunito: fuente redondeada y amigable para el cuerpo de texto
-*/
 
-/* ============================================================
-   VARIABLES CSS (Custom Properties)
-   ============================================================
-   Las variables CSS se definen con -- y se usan con var().
-   Las definimos en :root para que estén disponibles en toda la app.
-   
-   Ventaja: si cambiamos un color aquí, cambia en todos los sitios
-   donde se use esa variable. No tenemos que buscar y reemplazar.
-   ============================================================ */
 :root {
-  /* Paleta de colores principal */
-  --color-bg:          #0f0f1a;
-  --color-surface:     #1a1a2e;
-  --color-surface-2:   #16213e;
-  --color-border:      rgba(255, 255, 255, 0.08);
-  --color-text:        #f0f0f0;
-  --color-text-muted:  #8888aa;
-  --color-accent:      #f5a623;
-  --color-accent-red:  #e63946;
+  /* colores principales */
+  --color-bg: #0f0f1a;
+  --color-surface: #1a1a2e;
+  --color-surface-2: #16213e;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-text: #f0f0f0;
+  --color-text-muted: #8888aa;
+  --color-accent: #f5a623;
+  --color-accent-red: #e63946;
 
-  /* Tipografía */
+  /* tipo */
   --font-display: "Bangers", cursive;
-  --font-body:    "Nunito", sans-serif;
+  --font-body: "Nunito", sans-serif;
 
-  /* Espaciado */
-  --space-xs:  4px;
-  --space-sm:  8px;
-  --space-md:  16px;
-  --space-lg:  24px;
-  --space-xl:  40px;
+  /* espaciado */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
 
-  /* Radio de bordes */
+  /* radio de bordes */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
 
-  /* Sombras */
+  /* sombras */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.5);
 
-  /* Transiciones */
+  /* transiciones */
   --transition: 0.25s ease;
 }
 
-/* ============================================================
-   RESET Y BASE
-   ============================================================
-   Eliminamos los estilos por defecto del navegador para tener
-   control total sobre el diseño.
-   ============================================================ */
-*, *::before, *::after {
-  box-sizing: border-box; /* El padding y border se incluyen en el ancho total */
+/*reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -84,17 +61,15 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   min-height: 100vh;
-  /* Fondo con patrón de puntos decorativo */
-  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.04) 1px, transparent 0);
   background-size: 32px 32px;
 }
 
-/* ============================================================
-   LAYOUT PRINCIPAL
-   ============================================================ */
 .app {
-  max-width: 680px;     /* Ancho máximo para no ser demasiado ancho en pantallas grandes */
-  margin: 0 auto;       /* Centrar horizontalmente */
+  max-width: 680px;
+  
+  margin: 0 auto;
+  /* Centrar horizontalmente */
   padding: var(--space-lg);
   min-height: 100vh;
   display: flex;
@@ -102,16 +77,12 @@ body {
   gap: var(--space-xl);
 }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
 .header {
   text-align: center;
   position: relative;
   padding-top: var(--space-xl);
 }
 
-/* Pokéball decorativa en el fondo del header */
 .header__pokeball {
   position: absolute;
   top: -40px;
@@ -120,21 +91,18 @@ body {
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  background: linear-gradient(
-    to bottom,
-    rgba(230, 57, 70, 0.08) 50%,
-    rgba(255, 255, 255, 0.04) 50%
-  );
-  border: 2px solid rgba(255,255,255,0.05);
-  pointer-events: none; /* No interfiere con los clics */
+  background: linear-gradient(to bottom,
+      rgba(230, 57, 70, 0.08) 50%,
+      rgba(255, 255, 255, 0.04) 50%);
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  pointer-events: none;
 }
 
 .header__title {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 8vw, 5rem); /* clamp: mínimo, preferido, máximo */
+  font-size: clamp(3rem, 8vw, 5rem);
   letter-spacing: 4px;
   line-height: 1;
-  /* Texto con gradiente usando clip */
   background: linear-gradient(135deg, #f5a623 0%, #f53d3d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -153,19 +121,13 @@ body {
   letter-spacing: 1px;
 }
 
-/* ============================================================
-   MAIN
-   ============================================================ */
 .main {
-  flex: 1; /* Ocupa todo el espacio disponible entre header y footer */
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
 }
-
-/* ============================================================
-   BUSCADOR
-   ============================================================ */
+/* buscador */
 .search-container {
   position: relative;
 }
@@ -195,7 +157,7 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   transition: border-color var(--transition), box-shadow var(--transition);
-  outline: none; /* Quitamos el outline por defecto y ponemos el nuestro */
+  outline: none;
 }
 
 .search-input::placeholder {
@@ -203,13 +165,13 @@ body {
   font-weight: 400;
 }
 
-/* Estado de foco: importante para accesibilidad */
+/* foco */
 .search-input:focus {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.15);
 }
 
-/* Botón para limpiar el input */
+/* boton limpiar el input */
 .search-clear {
   position: absolute;
   right: var(--space-md);
@@ -232,9 +194,7 @@ body {
   color: var(--color-text);
 }
 
-/* ============================================================
-   CONTENEDOR DE ESTADOS (carga, error, vacío)
-   ============================================================ */
+/* contenedor carga, error, vacio */
 .status-container {
   display: flex;
   flex-direction: column;
@@ -249,9 +209,8 @@ body {
   font-size: 1rem;
 }
 
-/* ============================================================
-   LOADER (Pokéball animada)
-   ============================================================ */
+
+/* loader */
 .pokeball-loader {
   width: 60px;
   height: 60px;
@@ -263,7 +222,7 @@ body {
   border: 3px solid rgba(255, 255, 255, 0.1);
 }
 
-/* La mitad superior roja */
+/* mitad superior roja */
 .pokeball-loader__top {
   position: absolute;
   top: 0;
@@ -273,7 +232,7 @@ body {
   background: var(--color-accent-red);
 }
 
-/* La mitad inferior blanca/gris */
+/* mitad inferior blanca/gris */
 .pokeball-loader__bottom {
   position: absolute;
   bottom: 0;
@@ -283,7 +242,7 @@ body {
   background: rgba(255, 255, 255, 0.15);
 }
 
-/* El botón central */
+/* botón central */
 .pokeball-loader__button {
   position: absolute;
   top: 50%;
@@ -298,13 +257,16 @@ body {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* ============================================================
-   TARJETA DE ERROR
-   ============================================================ */
+/* tarjeta error */
 .error-card {
   background: rgba(230, 57, 70, 0.08);
   border: 1px solid rgba(230, 57, 70, 0.3);
@@ -332,9 +294,7 @@ body {
   font-size: 0.875rem;
 }
 
-/* ============================================================
-   ESTADO VACÍO (pantalla inicial)
-   ============================================================ */
+/* estado vacio */
 .empty-state {
   text-align: center;
   display: flex;
@@ -358,19 +318,21 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.4; }
-  50%       { opacity: 0.8; }
+
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
 }
 
-/* ============================================================
-   POKEMON CARD
-   ============================================================ */
+/* pokemon card */
 .pokemon-card {
-  /* 
-    La variable --type-color se define dinámicamente en el JSX
-    según el tipo del Pokémon. Aquí la usamos en los estilos.
-    Si no está definida, usamos un gris por defecto.
-  */
+
+  /* por defecto */
   --type-color: #777;
 
   position: relative;
@@ -380,17 +342,13 @@ body {
   padding: var(--space-lg);
   overflow: hidden;
 
-  /* Borde superior coloreado según el tipo */
   border-top: 3px solid var(--type-color);
 
-  /* Brillo sutil en la parte superior usando ::before */
-  /* (definido abajo con el pseudoelemento) */
 
-  /* Animación de entrada */
   animation: cardIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-/* Capa de brillo en la parte superior de la tarjeta */
+/* brillo en la parte superior de la tarjeta */
 .pokemon-card::before {
   content: "";
   position: absolute;
@@ -398,11 +356,9 @@ body {
   left: 0;
   right: 0;
   height: 120px;
-  background: linear-gradient(
-    to bottom,
-    rgba(var(--type-color-rgb, 119, 119, 119), 0.08) 0%,
-    transparent 100%
-  );
+  background: linear-gradient(to bottom,
+      rgba(var(--type-color-rgb, 119, 119, 119), 0.08) 0%,
+      transparent 100%);
   pointer-events: none;
 }
 
@@ -411,13 +367,14 @@ body {
     opacity: 0;
     transform: translateY(20px) scale(0.97);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
 
-/* Número grande en el fondo (decorativo) */
+/* numero grande en el fondo (decorativo) */
 .pokemon-card__bg-number {
   position: absolute;
   top: -10px;
@@ -427,11 +384,12 @@ body {
   color: rgba(255, 255, 255, 0.04);
   letter-spacing: 2px;
   pointer-events: none;
-  user-select: none; /* No se puede seleccionar el texto */
+  user-select: none;
+  /* para no seleccionar texto */
   line-height: 1;
 }
 
-/* Cabecera de la tarjeta: imagen + info */
+/* header de la tarjeta: imagen + info */
 .pokemon-card__header {
   display: flex;
   align-items: center;
@@ -439,9 +397,10 @@ body {
   margin-bottom: var(--space-lg);
 }
 
-/* Contenedor de la imagen */
+/* contenedor de la imagen */
 .pokemon-card__image-wrapper {
-  flex-shrink: 0; /* No se encoge en flexbox */
+  flex-shrink: 0;
+  /* para que no se encoga en flexbox */
   width: 140px;
   height: 140px;
   background: rgba(255, 255, 255, 0.03);
@@ -456,18 +415,25 @@ body {
   width: 120px;
   height: 120px;
   object-fit: contain;
-  /* Sombra basada en el color del tipo */
+  /* sombra basada en el color del tipo */
   filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.4));
-  /* Animación de flotación */
+  /* animación de flotación */
   animation: float 3s ease-in-out infinite;
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
-/* Info: número, nombre, tipos */
+/* info: número, nombre, tipos */
 .pokemon-card__info {
   flex: 1;
   display: flex;
@@ -490,7 +456,7 @@ body {
   color: var(--color-text);
 }
 
-/* Contenedor de badges de tipos */
+/* contenedor de badges de tipos */
 .pokemon-card__types {
   display: flex;
   gap: var(--space-xs);
@@ -498,19 +464,18 @@ body {
   margin-top: var(--space-xs);
 }
 
-/* Badge individual de tipo */
+/* badge individual de tipo */
 .pokemon-card__type-badge {
   padding: 3px 12px;
-  border-radius: 100px; /* Pastilla redondeada */
+  border-radius: 100px;
+  /* pastilla redondeada */
   font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-/* ============================================================
-   DATOS FÍSICOS (altura, peso, habilidades)
-   ============================================================ */
+/* datos fisicos */
 .pokemon-card__physical {
   display: flex;
   align-items: center;
@@ -551,9 +516,7 @@ body {
   background: var(--color-border);
 }
 
-/* ============================================================
-   STATS DE COMBATE
-   ============================================================ */
+/* stats combate */
 .pokemon-card__stats {
   display: flex;
   flex-direction: column;
@@ -605,19 +568,19 @@ body {
   height: 100%;
   background: var(--type-color);
   border-radius: 100px;
-  /* Animación del ancho al aparecer */
   animation: barGrow 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  animation-delay: 0.2s; /* Pequeño delay para que se vea bien */
+  animation-delay: 0.2s;
 }
 
 @keyframes barGrow {
-  from { width: 0 !important; }
-  /* El !important es necesario para sobrescribir el inline style durante la animación */
+  from {
+    width: 0 !important;
+  }
+
+  /* sobrescribir inline style durante la animación */
 }
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
+/*footer*/
 .footer {
   text-align: center;
   color: var(--color-text-muted);
@@ -635,12 +598,7 @@ body {
   text-decoration: underline;
 }
 
-/* ============================================================
-   RESPONSIVE — Mobile First
-   ============================================================
-   Adaptamos el diseño para pantallas pequeñas.
-   @media permite aplicar estilos solo en ciertos tamaños.
-   ============================================================ */
+/* responsive */
 @media (max-width: 480px) {
   .app {
     padding: var(--space-md);
@@ -648,7 +606,7 @@ body {
   }
 
   .pokemon-card__header {
-    flex-direction: column; /* En móvil, imagen encima del texto */
+    flex-direction: column;
     text-align: center;
   }
 
