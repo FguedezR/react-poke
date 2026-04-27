@@ -6,14 +6,14 @@ function App() {
   // guarda lo que el usuario escribe en el input
   const [searchTerm, setSearchTerm] = useState("");
 
-  //guarda los datos del pokemon cuando la api responde con exito
-  // null si todavia no hemos encontrado ninguno
+  // guarda los datos del Pokémon cuando la api responde con éxito
+  // null significa "todavía no hemos encontrado ninguno"
   const [pokemon, setPokemon] = useState(null);
 
-  //true mientras se espera la respuesta de la api
+  // true mientras esperamos la respuesta de la api
   const [loading, setLoading] = useState(false);
 
-  //guarda el mensaje de error si falla api o pokemon no encontrado
+  // guarda el mensaje de error si algo falla
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -22,16 +22,16 @@ function App() {
       setError(null);
       return;
     }
+
     const currentSearch = searchTerm.trim().toLowerCase();
 
     const timer = setTimeout(() => {
       fetchPokemon(currentSearch);
-    }, 500);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  /* console.log("Buscando:", JSON.stringify(name)); */
   const fetchPokemon = async (name) => {
     setLoading(true);
     setError(null);
@@ -39,15 +39,14 @@ function App() {
 
     try {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error(`No se encontró ningún Pokémon llamando ${name}`);
+          throw new Error(`No se encontró ningún Pokémon llamado "${name}"`);
         }
-        throw new Error(`Error en la API: ${response.status}`);
+        throw new Error(`Error de la API: ${response.status}`);
       }
       const data = await response.json();
-
-      // extraemos lo esencial de la api
       setPokemon({
         id: data.id,
         name: data.name,
@@ -55,10 +54,10 @@ function App() {
           data.sprites.other["official-artwork"].front_default ||
           data.sprites.front_default,
         types: data.types.map((t) => t.type.name),
-        height: data.height / 10,
-        weight: data.weight / 10,
+        height: data.height / 10, // lo convertimos a metros
+        weight: data.weight / 10, // lo convertimos a kg
         abilities: data.abilities.map((a) => a.ability.name),
-        stats: data.stats.map((a) => ({
+        stats: data.stats.map((s) => ({
           name: s.stat.name,
           value: s.base_stat,
         })),
@@ -70,12 +69,14 @@ function App() {
     }
   };
 
+  /* manejador del input */
   const handleInputChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
   return (
     <div className="app">
+      {/* cabecera */}
       <header className="header">
         <div className="header__pokeball" aria-hidden="true" />
         <h1 className="header__title">
@@ -84,25 +85,27 @@ function App() {
         <p className="header__subtitle">Busca cualquier Pokémon al instante</p>
       </header>
 
-      {/* busqueda */}
+      {/* sección de búsqueda */}
       <main className="main">
         <div className="search-container">
           <div className="search-wrapper">
-            {/* icono de busqueda */}
+            {/* icono de búsqueda */}
             <span className="search-icon" aria-hidden="true">
               ⚡
             </span>
-            {/* input del estado searchTerm */}
+
+            {/* input - valor siempre viene del estado searchTerm */}
             <input
               type="text"
               className="search-input"
-              placeholder="Escribe un nombre o un número..."
+              placeholder="Escribe un nombre o número..."
               value={searchTerm}
-              onChange={handleInputChange}
-              autoFocus
+              onChange={handleInputChange} // actualiza el estado en cada tecla
+              autoFocus // foco automático
               aria-label="Buscar Pokémon"
             />
-            {/* limpiar buscador visible si hay texto*/}
+
+            {/* para limpiar el buscador, solo visible si hay texto */}
             {searchTerm && (
               <button
                 className="search-clear"
@@ -115,6 +118,7 @@ function App() {
           </div>
         </div>
 
+        {/* Estado de carga */}
         {loading && (
           <div className="status-container">
             <div className="pokeball-loader" aria-label="Cargando...">
@@ -122,10 +126,11 @@ function App() {
               <div className="pokeball-loader__bottom" />
               <div className="pokeball-loader__button" />
             </div>
-            <p className="status-text">Buscando Pokémon</p>
+            <p className="status-text">Buscando Pokémon...</p>
           </div>
         )}
 
+        {/* Estado de error */}
         {error && !loading && (
           <div className="status-container">
             <div className="error-card" role="alert">
@@ -138,10 +143,11 @@ function App() {
           </div>
         )}
 
-        {/* tarjeta pokemon encontrado solo se mustra si es null y no hay carga ni error */}
+        {/* tarjeta del Pokémon encontrado */}
+        {/* Solo se muestra si pokemon no es null y no hay carga ni error */}
         {pokemon && !loading && !error && <PokemonCard pokemon={pokemon} />}
 
-        {/*estado inicial, no se busca nada */}
+        {/* estado inicial. no se ha buscado nada todavía */}
         {!searchTerm && !loading && !error && !pokemon && (
           <div className="status-container">
             <div className="empty-state">
@@ -157,6 +163,7 @@ function App() {
           </div>
         )}
       </main>
+
       <footer className="footer">
         <p>
           Datos obtenidos de{" "}
