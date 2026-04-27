@@ -17,21 +17,21 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    //campo está vacío, reseteamos todo y salimos.
-    //evitamos llamadas innecesarias a la API.
     if (searchTerm.trim() === "") {
       setPokemon(null);
       setError(null);
       return;
     }
+    const currentSearch = searchTerm.trim().toLowerCase();
 
     const timer = setTimeout(() => {
-      fetchPokemon(searchTerm.trim().toLowerCase());
+      fetchPokemon(currentSearch);
     }, 500);
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
+  /* console.log("Buscando:", JSON.stringify(name)); */
   const fetchPokemon = async (name) => {
     setLoading(true);
     setError(null);

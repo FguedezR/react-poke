@@ -46,7 +46,7 @@ function PokemonCard({ pokemon }) {
         #{String(pokemon.id).padStart(3, "0")}
       </div>
 
-        {/* imagen - nombre */}
+      {/* imagen - nombre */}
       <div className="pokemon-card__header">
         <div className="pokemon-card__image-wrapper">
           <img
@@ -60,6 +60,75 @@ function PokemonCard({ pokemon }) {
           />
         </div>
       </div>
+
+      <div className="pokemon-card__info">
+        <span className="pokemon-card__number">
+          #{String(pokemon.id).padStart(3, "0")}
+        </span>
+        <h2 className="pokemon-card__name">{capitalize(pokemon.name)}</h2>
+
+        <div className="pokemon-card__types">
+          {pokemon.types.map((types) => (
+            <span
+              key={type}
+              className="pokemon-card__type-badge"
+              style={{
+                backgroundColor: typeColors[type]?.bg || "#777",
+                color: typeColors[type]?.text || "#fff",
+              }}
+            >
+              {capitalize(type)}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="pokemon-card__physical">
+        <div className="pokemon-card__physical-item">
+          <span className="pokemon-card__physical-label">Altura</span>
+          <span className="pokemon-card__physical-value">
+            {pokemon.height} m
+          </span>
+        </div>
+        <div className="pokemon-card__physical-divider" />
+        <div className="pokemon-card__physical-item">
+          <span className="pokemon-card__physical-label">Peso</span>
+          <span className="pokemon-card__physical-value">
+            {pokemon.weight} kg
+          </span>
+        </div>
+        <div className="pokemon-card__physical-divider" />
+        <div className="pokemon-card__physical-item">
+          <span className="pokemon-card__physical-label">Habilidades</span>
+          <span className="pokemon-card__physical-value">
+            {pokemon.abilities.map(capitalize).join(", ")}
+          </span>
+        </div>
+      </div>
+
+      {/* stats de combate con barras de progreso */}
+      <div className="pokemon-card__stats">
+        <h3 className="pokemon-card__stats-title">Stats base</h3>
+        {pokemon.stats.map((stat) => (
+          <div key={stat.name} className="pokemon-card__stat-row">
+            <span className="pokemon-card__stat-name">
+              {formatStatName(stat.name)}
+            </span>
+            <span className="pokemon-card__stat-value">{stat.value}</span>
+
+            <div className="pokemon-card__stat-bar">
+              <div
+                className="pokemon-card__stat-bar-fill"
+                style={{
+                  width: `${Math.min((stat.value / 255) * 100, 100)}%`,
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
+
+export default PokemonCard;
