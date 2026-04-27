@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import PokemonCard from "./components/PokemonCard"
+import PokemonCard from "./components/PokemonCard";
+import "./App.css";
 
 function App() {
   // guarda lo que el usuario escribe en el input
